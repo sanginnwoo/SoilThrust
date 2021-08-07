@@ -21,7 +21,7 @@ D = 0.2
 W_g = 0.35
 
 # set test number
-test_no = 4
+test_no = 2
 
 # vertical force (kN) transmitted to the track system
 W_g_test = [0.0860, 0.1719, 0.2579, 0.3454]
@@ -39,7 +39,7 @@ Fx_test = [[0.1463, 0.1643, 0.2963, 0.3513],
 # if test data is used, override variables
 if test_no > 0 :
     # set dimensions of the track system
-    H = 0.0375
+    H = 0.0357
     L = 0.1239
     D = 0.1239
 
@@ -90,6 +90,9 @@ plt.xlim(left=0.)
 plt.ylim(top=0.6)
 plt.xlim(right=30.)
 
+plt.tick_params(direction='in', bottom=True, top=True, left=True, right=True)
+plt.grid(axis='both', color='lightgray', ls='-', lw=0.5)
+
 plt.text(20, 0.02,
          r'$H$ = ' + str(round(H, 4)) + " m \n" +
          r'$D$ = ' + str(round(D, 4)) + " m \n" +
@@ -136,4 +139,5 @@ plt.legend(bbox_to_anchor=(0., 1.02, 1., .02),
            frameon=False,
            fontsize=12)
 
+plt.savefig("test.svg", format="svg")
 plt.show()
