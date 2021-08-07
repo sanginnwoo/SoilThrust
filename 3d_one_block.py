@@ -1,32 +1,63 @@
+"""
+
+
+"""
+
 import numpy
 import numpy as np
 from scipy.optimize import bisect
 import matplotlib.pyplot as plt
-import matplotlib.ticker as ticker
 
 
-def fun(x, c1, c2):
+# function to solve
+def fun(x, c1, c2) :
     return x ** 3 + c1 * x ** 2 - c2
 
 
 # height (H), length (L), and width (D) of soil block
-H = 0.03
+H = 0.02
 L = 0.1
-D = 0.3
+D = 0.2
+W_g = 0.35
+
+# set test number
+test_no = 4
 
 # vertical force (kN) transmitted to the track system
-sig_g = 5.6
-W_g = sig_g * L * D
+W_g_test = [0.0860, 0.1719, 0.2579, 0.3454]
+
+# construct test data
+c_u_test = [[7.5, 8.8, 21.7, 27.2],
+            [7.5, 8.8, 21.7, 27.2],
+            [7.7],
+            [7.7]]
+Fx_test = [[0.1463, 0.1643, 0.2963, 0.3513],
+           [0.1788, 0.2008, 0.3288, 0.4275],
+           [0.1924],
+           [0.1982]]
+
+# if test data is used, override variables
+if test_no > 0 :
+    # set dimensions of the track system
+    H = 0.0375
+    L = 0.1239
+    D = 0.1239
+
+    # determine Wg from test number
+    W_g = W_g_test[test_no - 1]
+
+    # set test data shown in plot
+    c_u_show = c_u_test[test_no - 1]
+    Fx_show = Fx_test[test_no - 1]
 
 # undrained strength of clay (in kPa)
-c_u_list = []
-Fx_b = []
-Fx_t = []
+c_u_list = [0]
+Fx_b = [0]
+Fx_t = [0]
 
-for i in range(1, 401):
-
+for i in range(1, 601) :
     # increase c_u
-    c_u = i*0.05
+    c_u = i * 0.05
     c_u_list.append(c_u)
 
     # calculate the soil thrust for the block failure
@@ -41,9 +72,68 @@ for i in range(1, 401):
     Fx_t.append(W_g * np.cos(theta_rad) / np.sin(theta_rad)
                 + c_u * H * (D / np.sin(theta_rad) / np.cos(theta_rad) + H / np.cos(theta_rad)))
 
+# get soil thrust values with respect to undrained shear strength
 Fx = np.minimum(Fx_t, Fx_b)
 
-plt.plot(c_u_list, Fx, color='silver', linewidth=8)
-plt.plot(c_u_list, Fx_t, '-', color='black')
-plt.plot(c_u_list, Fx_b, '--', color='black')
+# plot soil thrust values
+plt.plot(c_u_list, Fx, color='silver', linewidth=8, label=r'$F_x$')
+plt.plot(c_u_list, Fx_t, '-', color='black', label=r'$F_{xt}$')
+plt.plot(c_u_list, Fx_b, '--', color='black', label=r'$F_{xb}$')
+
+# set axes title
+plt.xlabel("Undrained Shear Strength (kPa)")
+plt.ylabel("Soil Thrust (kN)")
+
+# set min values of x and y axes
+plt.ylim(bottom=0.)
+plt.xlim(left=0.)
+plt.ylim(top=0.6)
+plt.xlim(right=30.)
+
+plt.text(20, 0.02,
+         r'$H$ = ' + str(round(H, 4)) + " m \n" +
+         r'$D$ = ' + str(round(D, 4)) + " m \n" +
+         r'$L$ = ' + str(round(L, 4)) + " m \n" +
+         r'$W_g$ = ' + str(round(W_g, 4)) + " kN",
+         ha="left", va="bottom", size=12,
+         )
+
+# show test results
+if test_no > 0 :
+
+    fig_num = ''
+
+    if test_no == 1 :
+        fig_num = '(a)'
+    if test_no == 2 :
+        fig_num = '(b)'
+    if test_no == 3 :
+        fig_num = '(c)'
+    if test_no == 4 :
+        fig_num = '(d)'
+
+    # show fig. number
+    plt.text(1, 0.57, fig_num, ha="left", va="top", size=12)
+
+    # show markers
+    plt.plot(c_u_show, Fx_show, linewidth=0, marker='o', ms=12, mfc='white', mec='black',
+             label='Experimental Results')
+
+    for i in range(0, len(c_u_show)) :
+        if len(c_u_show) > 1 :
+            plt.text(c_u_show[i], Fx_show[i] - 0.02, str(test_no) + '-' + str(i + 1),
+                     ha="left", va="top", size=10)
+        else :
+            plt.text(c_u_show[i], Fx_show[i] - 0.02, str(test_no),
+                     ha="left", va="top", size=10)
+
+# set legend
+plt.legend(bbox_to_anchor=(0., 1.02, 1., .02),
+           loc=4,
+           ncol=4,
+           mode="expand",
+           borderaxespad=0.,
+           frameon=False,
+           fontsize=12)
+
 plt.show()
