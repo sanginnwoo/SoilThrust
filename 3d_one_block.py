@@ -18,10 +18,10 @@ def fun(x, c1, c2) :
 H = 0.02
 L = 0.1
 D = 0.2
-W_g = 0.35
+W_g = 0.5
 
 # set test number
-test_no = 2
+test_no = 0
 
 # vertical force (kN) transmitted to the track system
 W_g_test = [0.0860, 0.1719, 0.2579, 0.3454]
