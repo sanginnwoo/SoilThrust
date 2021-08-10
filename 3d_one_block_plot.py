@@ -15,10 +15,10 @@ def fun(x, c1, c2) :
 
 
 # height (H), length (L), and width (D) of soil block
-H = 0.036
-L = 0.120
-D = 2.0
-W_g = 1.8168
+H = 0.02
+L = 0.1
+D = 0.2
+W_g = 0.35
 
 # set test number
 test_no = 0
