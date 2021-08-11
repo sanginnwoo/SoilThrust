@@ -21,7 +21,7 @@ D = 0.2
 W_g = 0.35
 
 # set test number
-test_no = 0
+test_no = 2
 
 # vertical force (kN) transmitted to the track system
 W_g_test = [0.0860, 0.1719, 0.2579, 0.3454]
@@ -36,6 +36,15 @@ Fx_test = [[0.1463, 0.1643, 0.2963, 0.3513],
            [0.1924],
            [0.1982]]
 
+c_u_nume = [[],
+            [4.0, 5.0, 6.0],
+            [],
+            []]
+Fx_nume = [[],
+           [0.1, 0.1315, 0.1578],
+           [],
+           []]
+
 # if test data is used, override variables
 if test_no > 0 :
     # set dimensions of the track system
@@ -49,6 +58,10 @@ if test_no > 0 :
     # set test data shown in plot
     c_u_show = c_u_test[test_no - 1]
     Fx_show = Fx_test[test_no - 1]
+
+    c_u_nume_show = c_u_nume[test_no - 1]
+    Fx_nume_show = Fx_nume[test_no - 1]
+
 
 # undrained strength of clay (in kPa)
 c_u_list = [0]
@@ -87,8 +100,8 @@ plt.ylabel("Soil Thrust (kN)")
 # set min values of x and y axes
 plt.ylim(bottom=0.)
 plt.xlim(left=0.)
-#plt.ylim(top=0.6)
-#plt.xlim(right=30.)
+plt.ylim(top=0.4)
+plt.xlim(right=20.)
 
 plt.tick_params(direction='in', bottom=True, top=True, left=True, right=True)
 plt.grid(axis='both', color='lightgray', ls='-', lw=0.5)
@@ -120,6 +133,9 @@ if test_no > 0 :
 
     # show markers
     plt.plot(c_u_show, Fx_show, linewidth=0, marker='o', ms=12, mfc='white', mec='black',
+             label='Experimental Results')
+
+    plt.plot(c_u_nume_show, Fx_nume_show, linewidth=0, marker='o', ms=6, mfc='black', mec='black',
              label='Experimental Results')
 
     for i in range(0, len(c_u_show)) :
