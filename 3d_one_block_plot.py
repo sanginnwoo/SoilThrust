@@ -37,11 +37,15 @@ Fx_test = [[0.1463, 0.1643, 0.2963, 0.3513],
            [0.1982]]
 
 c_u_nume = [[],
-            [4.0, 5.0, 6.0],
+            [4.0, 5.0, 6.0, 7.0,
+             8.0, 9.0, 10.0, 11.0,
+             12.0, 15.0, 20.0, 25.0],
             [],
             []]
 Fx_nume = [[],
-           [0.1, 0.1315, 0.1578],
+           [0.1088, 0.1315, 0.1578, 0.1791,
+            0.0000, 0.0000, 0.0000, 0.0000,
+            0.2764, 0.0000, 0.0000, 0.0000],
            [],
            []]
 
@@ -100,8 +104,8 @@ plt.ylabel("Soil Thrust (kN)")
 # set min values of x and y axes
 plt.ylim(bottom=0.)
 plt.xlim(left=0.)
-plt.ylim(top=0.4)
-plt.xlim(right=20.)
+plt.ylim(top=0.6)
+plt.xlim(right=30.)
 
 plt.tick_params(direction='in', bottom=True, top=True, left=True, right=True)
 plt.grid(axis='both', color='lightgray', ls='-', lw=0.5)
@@ -136,7 +140,7 @@ if test_no > 0 :
              label='Experimental Results')
 
     plt.plot(c_u_nume_show, Fx_nume_show, linewidth=0, marker='o', ms=6, mfc='black', mec='black',
-             label='Experimental Results')
+             label='Numerical Results')
 
     for i in range(0, len(c_u_show)) :
         if len(c_u_show) > 1 :
@@ -149,7 +153,7 @@ if test_no > 0 :
 # set legend
 plt.legend(bbox_to_anchor=(0., 1.02, 1., .02),
            loc=4,
-           ncol=4,
+           ncol=3,
            mode="expand",
            borderaxespad=0.,
            frameon=False,
