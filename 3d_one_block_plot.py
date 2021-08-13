@@ -36,13 +36,35 @@ Fx_test = [[0.1463, 0.1643, 0.2963, 0.3513],
            [0.1924],
            [0.1982]]
 
-c_u_nume = [[],
+c_u_nume_f1 = [[],
             [4.0, 6.0, 8.0, 10.0,
              12.0, 15.0, 20.0, 25.0],
             [],
             []]
-Fx_nume = [[],
-           [0.0000, 0.0000, 0.0000, 0.0000,
+Fx_nume_f1 = [[],
+           [0.1350, 0.1868, 0.2356, 0.2798,
+            0.3196, 0.3737, 0.4581, 0.5383],
+           [],
+           []]
+
+c_u_nume_f2 = [[],
+            [4.0, 6.0, 8.0, 10.0,
+             12.0, 15.0, 20.0, 25.0],
+            [],
+            []]
+Fx_nume_f2 = [[],
+           [0.1040, 0.1509, 0.1927, 0.2323,
+            0.2637, 0.3010, 0.3692, 0.4326],
+           [],
+           []]
+
+c_u_nume_f3 = [[],
+            [4.0, 6.0, 8.0, 10.0,
+             12.0, 15.0, 20.0, 25.0],
+            [],
+            []]
+Fx_nume_f3 = [[],
+           [0.0000, 0.1447, 0.1847, 0.0000,
             0.0000, 0.0000, 0.0000, 0.0000],
            [],
            []]
@@ -61,8 +83,14 @@ if test_no > 0 :
     c_u_show = c_u_test[test_no - 1]
     Fx_show = Fx_test[test_no - 1]
 
-    c_u_nume_show = c_u_nume[test_no - 1]
-    Fx_nume_show = Fx_nume[test_no - 1]
+    c_u_nume_show_f1 = c_u_nume_f1[test_no - 1]
+    Fx_nume_show_f1 = Fx_nume_f1[test_no - 1]
+
+    c_u_nume_show_f2 = c_u_nume_f2[test_no - 1]
+    Fx_nume_show_f2 = Fx_nume_f2[test_no - 1]
+
+    c_u_nume_show_f3 = c_u_nume_f3[test_no - 1]
+    Fx_nume_show_f3 = Fx_nume_f3[test_no - 1]
 
 
 # undrained strength of clay (in kPa)
@@ -137,8 +165,15 @@ if test_no > 0 :
     plt.plot(c_u_show, Fx_show, linewidth=0, marker='o', ms=12, mfc='white', mec='black',
              label='Experimental Results')
 
-    plt.plot(c_u_nume_show, Fx_nume_show, linewidth=0, marker='o', ms=6, mfc='black', mec='black',
+    plt.plot(c_u_nume_show_f1, Fx_nume_show_f1, linewidth=1, marker='o', ms=6, mfc='red', mec='black',
              label='Numerical Results')
+
+    plt.plot(c_u_nume_show_f2, Fx_nume_show_f2, linewidth=1, marker='o', ms=6, mfc='yellow', mec='black',
+             label='Numerical Results')
+
+    plt.plot(c_u_nume_show_f3, Fx_nume_show_f3, linewidth=1, marker='o', ms=6, mfc='blue', mec='black',
+             label='Numerical Results')
+
 
     for i in range(0, len(c_u_show)) :
         if len(c_u_show) > 1 :
