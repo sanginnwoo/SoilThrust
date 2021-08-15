@@ -1,23 +1,29 @@
 """
 Main developer: Sang Inn Woo @ Incheon National University
-Pur
-
+The main goal of this code is to calculate the reliable soil thrust under 3d conditions
+of a single track system (plate + grouser) for tracked vehicles over saturated clay ground.
+Following the limit analysis concept (the upper bound theorem is used here),
+this code assumes two geometrically acceptable failure modes (the block and triangular wedge failure modes).
+The proposed soil thrust is the least value of soil thrusts from two failre modes.
 """
 
 # import depending libraries
 import numpy as np
 from scipy.optimize import bisect
 
-# declare a function to solve
+# declare a function to solve in the triangular wedge failure mode
 def fun(x, c1, c2) :
     return x ** 3 + c1 * x ** 2 - c2
 
-
-# height (H), length (L), and width (D) of soil block
+# set height (H), length (L), and width (D) of soil block
 H = 0.0357
 L = 0.1239
 D = 0.1239
+
+# set vertical load acting the soil block
 W_g = 0.3454
+
+# set the undrained shear strength of the clay
 c_u = 7.7
 
 # calculate the soil thrust for the block failure
@@ -35,6 +41,7 @@ Fx_t = W_g * np.cos(theta_rad) / np.sin(theta_rad) \
 # get soil thrust values with respect to undrained shear strength
 Fx = np.minimum(Fx_t, Fx_b)
 
+# print soil thrust values
 print("Fxb = " + str(round(Fx_b,4)) + " kN")
 print("Fxt = " + str(round(Fx_t,4)) + " kN")
 print("Fx = " + str(round(Fx,4)) + " kN")
