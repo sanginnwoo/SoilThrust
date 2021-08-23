@@ -13,6 +13,9 @@ import matplotlib.pyplot as plt
 def fun(x, c1, c2) :
     return x ** 3 + c1 * x ** 2 - c2
 
+def fun_p(x, c1, c2, c3, c4) :
+    return x ** 2 + c1 * (c2 * x + c3) * np.sqrt(1 - x ** 2) + c4*x - 2
+
 
 # height (H), length (L), and width (D) of soil block
 H = 0.02
@@ -96,6 +99,7 @@ if test_no > 0 :
 c_u_list = [0]
 Fx_b = [0]
 Fx_t = [0]
+Fx_p = [0]
 
 for i in range(1, 601) :
     # increase c_u
@@ -105,14 +109,26 @@ for i in range(1, 601) :
     # calculate the soil thrust for the block failure
     Fx_b.append(c_u * L * (2 * H + D))
 
-    # find angle of the failure surface with respect to the vertica line
-    sin_theta = bisect(fun, 0, 1, args=(W_g / c_u / H ** 2 + 2 * D / H, W_g / c_u / H ** 2 + D / H))
-    theta_rad = numpy.arcsin(sin_theta)
-    theta_deg = theta_rad * 180 / numpy.pi
+    # find angle of the failure surface with respect to the vertica line: triangle
+    sin_theta_t = bisect(fun, -1, 1, args=(W_g / c_u / H ** 2 + 2 * D / H, W_g / c_u / H ** 2 + D / H))
+    theta_rad_t = numpy.arcsin(sin_theta_t)
+    theta_deg_t = theta_rad_t * 180 / numpy.pi
 
     # calculate the soil thrust for the triangular wedge failure
-    Fx_t.append(W_g * np.cos(theta_rad) / np.sin(theta_rad)
-                + c_u * H * (D / np.sin(theta_rad) / np.cos(theta_rad) + H / np.cos(theta_rad)))
+    Fx_t.append(W_g * np.cos(theta_rad_t) / np.sin(theta_rad_t)
+                + c_u * H * (D / np.sin(theta_rad_t) / np.cos(theta_rad_t) + H / np.cos(theta_rad_t)))
+
+    # find angle of the failure surface with respect to the vertica line: trapezoidal
+    sin_theta_p = bisect(fun_p, -1, 1, args=(2 / L, H, D, W_g / c_u / L ** 2))
+    theta_rad_p = numpy.arcsin(sin_theta_p)
+    theta_deg_p = theta_rad_p * 180 / numpy.pi
+
+    Fx_p.append(W_g * np.cos(theta_rad_p) / np.sin(theta_rad_p)
+                + c_u * L * (D / np.sin(theta_rad_p) / np.sin(theta_rad_p)
+                             + 2 * H / np.sin(theta_rad_p)
+                             - L * np.cos(theta_rad_p) / np.sin(theta_rad_p) ** 2))
+
+
 
 # get soil thrust values with respect to undrained shear strength
 Fx = np.minimum(Fx_t, Fx_b)
