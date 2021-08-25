@@ -2,6 +2,7 @@ import numpy as np
 from scipy.optimize import bisect
 import matplotlib.pyplot as plt
 import pandas as pd
+from scipy.interpolate import interp1d
 
 
 # function to solve
@@ -42,10 +43,10 @@ Fx_test = [[0.1463, 0.1643, 0.2963, 0.3513],
 Numerical Results (Simulation A, B, C in Case 2)
 """
 
-c_u_nume = [4.0, 6.0, 8.0, 10.0, 12.0, 15.0, 20.0, 25.0]
-Fx_nume_A = [0.1350, 0.1868, 0.2356, 0.2798, 0.3196, 0.3737, 0.4581, 0.5383]
-Fx_nume_B = [0.1040, 0.1509, 0.1927, 0.2323, 0.2637, 0.3010, 0.3692, 0.4326]
-Fx_nume_C = [0.1008, 0.1447, 0.1811, 0.2172, 0.2550, 0.2918, 0.3529, 0.4061]
+c_u_nume = np.array([4.0, 6.0, 8.0, 10.0, 12.0, 15.0, 20.0, 25.0])
+Fx_nume_A = np.array([0.1350, 0.1868, 0.2356, 0.2798, 0.3196, 0.3737, 0.4581, 0.5383])
+Fx_nume_B = np.array([0.1040, 0.1509, 0.1927, 0.2323, 0.2637, 0.3010, 0.3692, 0.4326])
+Fx_nume_C = np.array([0.1008, 0.1447, 0.1811, 0.2172, 0.2550, 0.2918, 0.3529, 0.4061])
 
 # if test data is used, override variables
 if test_no > 0 :
@@ -136,9 +137,9 @@ for i in range(1, 601) :
 
 # plot soil thrust values
 plt.plot(c_u_list, Fx, color='silver', linewidth=8, label=r'$F_x$')
-plt.plot(c_u_list, Fx_t, '--', color='black', label=r'$F_{xt}$')
-plt.plot(c_u_list, Fx_b, '-', color='black', label=r'$F_{xb}$')
-plt.plot(c_u_list, Fx_p, ':', color='black', label=r'$F_{xp}$')
+plt.plot(c_u_list, Fx_t, '--', color='grey', label=r'$F_{xt}$')
+plt.plot(c_u_list, Fx_b, '-', color='grey', label=r'$F_{xb}$')
+plt.plot(c_u_list, Fx_p, ':', color='grey', label=r'$F_{xp}$')
 
 # set axes title
 plt.xlabel("Undrained Shear Strength (kPa)")
@@ -165,9 +166,12 @@ plt.text(20, 0.02,
 # show numerical results
 if test_no == 2 :
 
-    plt.plot(c_u_nume, Fx_nume_A, '-', linewidth=1, color='blue')
-    plt.plot(c_u_nume, Fx_nume_B, '-', linewidth=1, color='blue')
-    plt.plot(c_u_nume, Fx_nume_C, '-', linewidth=1, color='blue')
+    plt.plot(c_u_nume, Fx_nume_A, '-', linewidth=1, color='red',
+             marker='o', ms=3, mfc='red', mec='red')
+    plt.plot(c_u_nume, Fx_nume_B, '-', linewidth=1, color='blue',
+             marker='o', ms=3, mfc='blue', mec='blue')
+    plt.plot(c_u_nume, Fx_nume_C, '-', linewidth=1, color='black',
+             marker='o', ms=3, mfc='black', mec='black')
 
 
 # show test results
