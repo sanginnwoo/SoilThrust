@@ -161,6 +161,15 @@ plt.text(20, 0.02,
          ha="left", va="bottom", size=12,
          )
 
+
+# show numerical results
+if test_no == 2 :
+
+    plt.plot(c_u_nume, Fx_nume_A, '-', linewidth=1, color='blue')
+    plt.plot(c_u_nume, Fx_nume_B, '-', linewidth=1, color='blue')
+    plt.plot(c_u_nume, Fx_nume_C, '-', linewidth=1, color='blue')
+
+
 # show test results
 if test_no > 0 :
 
@@ -177,13 +186,6 @@ if test_no > 0 :
             plt.text(c_u_show[i], Fx_show[i] - 0.02, str(test_no),
                      ha="left", va="top", size=10)
 
-
-# show numerical results
-if test_no == 2 :
-
-    plt.plot(c_u_nume, Fx_nume_A, '-.', linewidth=1.5, color='blue')
-    plt.plot(c_u_nume, Fx_nume_B, '-.', linewidth=1.5, color='blue')
-    plt.plot(c_u_nume, Fx_nume_C, '-.', linewidth=1.5, color='blue')
 
 
 # set legend
