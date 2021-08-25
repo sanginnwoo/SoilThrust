@@ -21,6 +21,10 @@ W_g = 0.2
 # set test number
 test_no = 2
 
+"""
+Experimental Results (Case 1, 2, 3, 4)
+"""
+
 # vertical force (kN) transmitted to the track system
 W_g_test = [0.0860, 0.1719, 0.2579, 0.3454]
 
@@ -33,6 +37,15 @@ Fx_test = [[0.1463, 0.1643, 0.2963, 0.3513],
            [0.1788, 0.2008, 0.3288, 0.4275],
            [0.1924],
            [0.1982]]
+
+"""
+Numerical Results (Simulation A, B, C in Case 2)
+"""
+
+c_u_nume = [4.0, 6.0, 8.0, 10.0, 12.0, 15.0, 20.0, 25.0]
+Fx_nume_A = [0.1350, 0.1868, 0.2356, 0.2798, 0.3196, 0.3737, 0.4581, 0.5383]
+Fx_nume_B = [0.1040, 0.1509, 0.1927, 0.2323, 0.2637, 0.3010, 0.3692, 0.4326]
+Fx_nume_C = [0.1008, 0.1447, 0.1811, 0.2172, 0.2550, 0.2918, 0.3529, 0.4061]
 
 # if test data is used, override variables
 if test_no > 0 :
@@ -134,7 +147,7 @@ plt.ylabel("Soil Thrust (kN)")
 # set min values of x and y axes
 plt.ylim(bottom=0.)
 plt.xlim(left=0.)
-plt.ylim(top=0.8)
+plt.ylim(top=0.6)
 plt.xlim(right=30.)
 
 plt.tick_params(direction='in', bottom=True, top=True, left=True, right=True)
@@ -151,20 +164,6 @@ plt.text(20, 0.02,
 # show test results
 if test_no > 0 :
 
-    fig_num = ''
-
-    if test_no == 1 :
-        fig_num = '(a)'
-    if test_no == 2 :
-        fig_num = '(b)'
-    if test_no == 3 :
-        fig_num = '(c)'
-    if test_no == 4 :
-        fig_num = '(d)'
-
-    # show fig. number
-    plt.text(1, 0.77, fig_num, ha="left", va="top", size=12)
-
     # show markers
     plt.plot(c_u_show, Fx_show, linewidth=0,
              marker='o', ms=8, mfc='white', mec='black',
@@ -177,6 +176,15 @@ if test_no > 0 :
         else :
             plt.text(c_u_show[i], Fx_show[i] - 0.02, str(test_no),
                      ha="left", va="top", size=10)
+
+
+# show numerical results
+if test_no == 2 :
+
+    plt.plot(c_u_nume, Fx_nume_A, '-.', linewidth=1.5, color='blue')
+    plt.plot(c_u_nume, Fx_nume_B, '-.', linewidth=1.5, color='blue')
+    plt.plot(c_u_nume, Fx_nume_C, '-.', linewidth=1.5, color='blue')
+
 
 # set legend
 plt.legend(bbox_to_anchor=(0., 1.02, 1., .02),

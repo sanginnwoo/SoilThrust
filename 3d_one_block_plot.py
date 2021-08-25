@@ -67,7 +67,7 @@ c_u_nume_f3 = [[],
                [],
                []]
 Fx_nume_f3 = [[],
-              [0.0968, 0.1447, 0.1811, 0.2172,
+              [0.1008, 0.1447, 0.1811, 0.2172,
                0.2550, 0.2918, 0.3529, 0.4061],
               [],
               []]
@@ -122,11 +122,6 @@ for i in range(1, 601) :
     sin_theta_p = bisect(fun_p, -1, 1, args=(2 / L, H, D, W_g / c_u / L ** 2))
     theta_rad_p = numpy.arcsin(sin_theta_p)
     theta_deg_p = theta_rad_p * 180 / numpy.pi
-
-    Fx_p.append(W_g * np.cos(theta_rad_p) / np.sin(theta_rad_p)
-                + c_u * L * (D / np.sin(theta_rad_p) / np.sin(theta_rad_p)
-                             + 2 * H / np.sin(theta_rad_p)
-                             - L * np.cos(theta_rad_p) / np.sin(theta_rad_p) ** 2))
 
 
 

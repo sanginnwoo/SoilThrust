@@ -28,7 +28,7 @@ L = 0.1239
 D = 0.1239
 
 # set vertical load acting the soil block
-W_g = 0.
+W_g = 0.2
 
 # set the undrained shear strength of the clay
 c_u = 7.7
