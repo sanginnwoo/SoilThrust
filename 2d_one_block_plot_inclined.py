@@ -14,6 +14,11 @@ def fun_p(x, c1, c2, c3, c4) :
 
 
 # height (H), length (L), and width (D) of soil block
+H = 0.03
+L = 0.15
+W_g = 1.5
+
+# height (H), length (L), and width (D) of soil block for exp.
 H = 0.036
 L = 0.124
 W_g = 1.36
@@ -71,7 +76,7 @@ for i in range(1, 601) :
     Fx.append(np.nanmin([Fx_b[i-1], Fx_t[i-1]]))
 
 # set the size of plot
-fig, axs = plt.subplots(2, 1,
+fig, axs = plt.subplots(2, 1, figsize=(6, 9),
                         gridspec_kw={'height_ratios': [1, 2]})
 
 # plot theta with respec to c_u
