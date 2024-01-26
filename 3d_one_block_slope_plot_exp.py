@@ -16,13 +16,16 @@ def fun_p(x, c1, c2, c3, c4) :
 H = 0.035
 L = 0.095
 D = 0.15
-W_g = 0.25
+beta = np.radians(30)
+W_g = 0.2
 
 # set test number
 test_no = 0
 
 # vertical force (kN) transmitted to the track system
 W_g_test = [0.0860, 0.1719, 0.2579, 0.3454]
+
+beta_test = [np.radians(0), np.radians(0), np.radians(0), np.radians(0)]
 
 # construct test data
 c_u_test = [[7.5, 8.8, 21.7, 27.2],
@@ -44,6 +47,8 @@ if test_no > 0 :
 
     # determine Wg from test number
     W_g = W_g_test[test_no - 1]
+
+    beta = beta_test[test_no - 1]
 
     # set test data shown in plot
     c_u_show = c_u_test[test_no - 1]
@@ -70,71 +75,52 @@ for i in range(1, 601) :
     """
 
     # calculate the soil thrust for the block failure
-    Fx_b.append(c_u * L * (2 * H + D))
+    Fx_b.append(c_u * L * (2 * H + D) - W_g * np.sin(beta))
 
     """
     Triangular wedge failure mode
     """
 
     # check the start and end values for the bisection method
-    bisect_start_value = fun_t(0, W_g / c_u / H ** 2 + 2 * D / H, W_g / c_u / H ** 2 + D / H)
-    bisect_end_value = fun_t(sin_theta_tip, W_g / c_u / H ** 2 + 2 * D / H, W_g / c_u / H ** 2 + D / H)
+    bisect_start_value = fun_t(0,
+                               W_g * np.cos(beta) / c_u / H ** 2 + 2 * D / H,
+                               W_g * np.cos(beta) / c_u / H ** 2 + D / H)
+    bisect_end_value = fun_t(sin_theta_tip,
+                             W_g * np.cos(beta) / c_u / H ** 2 + 2 * D / H,
+                             W_g * np.cos(beta) / c_u / H ** 2 + D / H)
 
     # if solution exists
     if bisect_start_value * bisect_end_value < 0:
         # find angle of the failure surface with respect to the vertica line: triangle
-        sin_theta_t = bisect(fun_t, 0, sin_theta_tip, args=(W_g / c_u / H ** 2 + 2 * D / H, W_g / c_u / H ** 2 + D / H))
+        sin_theta_t = bisect(fun_t, 0, sin_theta_tip, args=(W_g * np.cos(beta) / c_u / H ** 2 + 2 * D / H,
+                                                               W_g * np.cos(beta) / c_u / H ** 2 + D / H))
         theta_rad_t = np.arcsin(sin_theta_t)
         theta_deg_t = theta_rad_t * 180 / np.pi
 
         # calculate the soil thrust for the triangular wedge failure
-        Fx_t.append(W_g * np.cos(theta_rad_t) / np.sin(theta_rad_t)
+        Fx_t.append(W_g * (np.cos(theta_rad_t)  * np.cos(beta) / np.sin(theta_rad_t) - np.sin(beta))
                     + c_u * H * (D / np.sin(theta_rad_t) / np.cos(theta_rad_t) + H / np.cos(theta_rad_t)))
     else:
         Fx_t.append(np.nan)
 
 
-    """
-    Trapezoidal wedge failure mode
-    """
-
-    # check the start and end values for the bisection method
-    bisect_start_value = fun_p(sin_theta_tip, 2 / L, H, D, W_g / c_u / L ** 2)
-    bisect_end_value = fun_p(1, 2 / L, H, D, W_g / c_u / L ** 2)
-
-    # if solution exists
-    if bisect_start_value * bisect_end_value < 0:
-        # find angle of the failure surface with respect to the vertica line: trapezoidal
-        sin_theta_p = bisect(fun_p, sin_theta_tip, 1, args=(2 / L, H, D, W_g / c_u / L ** 2))
-        theta_rad_p = np.arcsin(sin_theta_p)
-        theta_deg_p = theta_rad_p * 180 / np.pi
-        Fx_p.append(W_g * np.cos(theta_rad_p) / np.sin(theta_rad_p)
-                    + c_u * L * (D / np.sin(theta_rad_p) / np.sin(theta_rad_p)
-                                 + 2 * H / np.sin(theta_rad_p)
-                                 - L * np.cos(theta_rad_p) / np.sin(theta_rad_p) ** 2))
-    else:
-        Fx_p.append(np.nan)
-
-
-
     # Print min soil thrust as a solution
-    Fx.append(np.nanmin([Fx_b[i-1], Fx_t[i-1], Fx_p[i-1]]))
+    Fx.append(np.nanmin([Fx_b[i-1], Fx_t[i-1]]))
 
 
 # plot soil thrust values
 plt.plot(c_u_list, Fx, color='silver', linewidth=8, label=r'$F_x$')
 plt.plot(c_u_list, Fx_t, '--', color='black', label=r'$F_{xt}$')
 plt.plot(c_u_list, Fx_b, '-', color='black', label=r'$F_{xb}$')
-plt.plot(c_u_list, Fx_p, ':', color='black', label=r'$F_{xp}$')
 
 # set axes title
 plt.xlabel("Undrained Shear Strength (kPa)")
 plt.ylabel("Soil Thrust (kN)")
 
 # set min values of x and y axes
-plt.ylim(bottom=0.)
+plt.ylim(bottom=-0.5)
 plt.xlim(left=0.)
-plt.ylim(top=0.8)
+plt.ylim(top=0.5)
 plt.xlim(right=30.)
 
 plt.tick_params(direction='in', bottom=True, top=True, left=True, right=True)
