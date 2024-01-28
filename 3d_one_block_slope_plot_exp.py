@@ -55,7 +55,7 @@ if test_no > 0:
     c_u_show = c_u_test[test_no - 1]
     Fx_show = Fx_test[test_no - 1]
 
-for b in range(-50, 60, 10):
+for b in range(-45, 60, 15):
 
     # undrained strength of clay (in kPa)
     c_u_list = []
@@ -112,9 +112,9 @@ for b in range(-50, 60, 10):
         Fx.append(np.nanmin([Fx_b[i - 1], Fx_t[i - 1]]))
 
     # plot soil thrust values
-    plt.plot(c_u_list, Fx, color='black', linewidth=1, label=r'$F_x$')
-    #plt.plot(c_u_list, Fx_t, '--', color='black', label=r'$F_{xt}$')
-    #plt.plot(c_u_list, Fx_b, '-', color='black', label=r'$F_{xb}$')
+    plt.plot(c_u_list, Fx, color='grey', linewidth=2, label=r'$F_x$')
+    plt.plot(c_u_list, Fx_t, '--', color='black', linewidth=0.5, label=r'$F_{xt}$')
+    plt.plot(c_u_list, Fx_b, '-', color='black', linewidth=0.5, label=r'$F_{xb}$')
 
 # set axes title
 plt.xlabel("Undrained Shear Strength (kPa)")
